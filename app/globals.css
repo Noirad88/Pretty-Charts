@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  --text-color: white;
+  --primary: rgb(197, 60, 255);
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -51,17 +53,23 @@ h6{
 }
 
 p{
-  @apply text-lg
+  @apply text-lg tracking-wide
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: var(--font-primary);
+  @apply text-textColor tracking-tight font-normal font-primary inline;
 }
 
 p{
-  font-family: var(--font-secondary);
+  @apply text-textColor font-secondary font-normal
 }
 
 button{
-  text-transform: uppercase;
+  @apply inline tracking-widest uppercase font-semibold bg-transparent h-min hover:bg-primary text-primary hover:text-black border-primary ui-frame p-4 transition-all;
+}
+
+@layer components {
+  .ui-frame{
+    @apply rounded-md border;
+  }
 }
