@@ -1,6 +1,6 @@
-# Playground
+# Pretty charts
 
-A Collection of randomly explored UI and compositions. React & Tailwind.
+Experimenting with a custom, responsive chart component in React.
 
 ## Getting Started
 
