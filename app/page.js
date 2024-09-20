@@ -66,6 +66,24 @@ function ChartCol(props){
   )
 }
 
+function ScrollIndicatorContainer(props){
+  return(
+    <div className={`${props.className} pointer-events-none absolute z-[10] flex flex-row w-full h-full justify-between items-center px-16 transition-all`}>
+      <ScrollIndicator>
+        0
+      </ScrollIndicator>
+      <ScrollIndicator>
+        1
+      </ScrollIndicator>
+    </div>
+  )
+}
+
+function ScrollIndicator({children}){
+  return (
+    <div className="flex flex-row bg-white place-content-center size-[32px] p-2 rounded-full drop-shadow-md"><p className="text-black text-xs w-full h-full text-center">{children}</p></div>
+  )
+}
 
 ChartCol.defaultProps = {
   fixed_width: false,
@@ -73,6 +91,7 @@ ChartCol.defaultProps = {
 }
 
 function Chart(props){
+  const [on_hover,set_on_hover] = useState("hidden")
   
   console.log(props.scrollable)
 
@@ -102,7 +121,7 @@ function Chart(props){
   }
 
   return (
-    <div className="relative flex flex-col">
+    <div onMouseOver={()=>set_on_hover(true)} onMouseLeave={()=>set_on_hover(false)} className="relative flex flex-col">
       <div className="absolute z-[10] l-0 h-full py-14">
         <div className="flex flex-col h-full justify-between border-r border-r-neutral-400 pr-2 bg-background">
           {data_v_nums.reverse()}
@@ -114,6 +133,11 @@ function Chart(props){
             {data_cols}
         </div>
       </div>
+      {(()=>{
+        if (props.scrollable == true){
+          return <ScrollIndicatorContainer className={on_hover == true ? "opacity-100" : "opacity-0"}/>
+        }
+      })()}
     </div>
   )
 }
