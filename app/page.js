@@ -8,12 +8,12 @@ import Link from "next/link";
 
 const data_sheet = require('./test_data.json');
 const data_sheet_small = require('./test_data_small.json');
-const lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis nisl quis elit pulvinar pharetra nec ac eros. Aliquam ut augue elementum, ultrices tortor vitae, dignissim libero."
+const header_description = "Chart visualizations are often inflexible or unattractive. I thought it would be a fun challenge to create a custom chart component that is responsive, clean, accessible, and customizable. Below is a quick showcase of the design's flexibility."
 
 function MainGrid({children}) {
   return(
     <div className="flex flex-row justify-center">
-      <div className="grid md:grid-cols-12 grid-cols-4 md:max-w-[1200px] w-full gap-x-16 gap-y-32 py-32 md:mx-16 mx-8 overflow-hidden">
+      <div className="grid md:grid-cols-12 grid-cols-4 md:max-w-[1200px] w-full gap-x-16 md:gap-y-32 gap-y-16 py-32 md:mx-16 mx-8 overflow-hidden">
         {children}
       </div>
     </div>
@@ -179,8 +179,8 @@ export default function Home() {
           </InnerSection>
         </div>
         <div className="md:col-span-6 col-span-full">
-          <InnerSection className="justify-start">
-            <p>{lorem_ipsum + " " + lorem_ipsum}</p>
+          <InnerSection className="md:justify-end justify-start">
+            <p>{header_description}</p>
           </InnerSection>
         </div>
         
@@ -211,9 +211,12 @@ export default function Home() {
 
         <div className="col-span-full">
           <InnerSection className="items-center text-center">
-          <h2>Thanks for looking! I'd love to hear if you've used these in any way, so feel free to shoot me a message</h2>
-            <p>You should look at everything else I do</p>
-            <BigButton href="https://darionmccoy.com">Explore more projects</BigButton>
+          <h2>Thanks for looking!</h2>
+          <p>Feel free to use this code. I'd love to know if you've used it in any way.</p>
+          <div className="flex flex-row flex-wrap gap-2 justify-center w-full">
+            <BigButton href="https://x.com/darionmccoy">View my Twitter</BigButton>
+            <BigButton href="https://darionmccoy.com">Explore more work</BigButton>
+          </div>
           </InnerSection>
         </div>
 
