@@ -1,11 +1,13 @@
 'use client'
 
 import { useRef, useState, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
 
 const data_sheet = require('./test_data.json');
 const data_sheet_small = require('./test_data_small.json');
-
 const lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis nisl quis elit pulvinar pharetra nec ac eros. Aliquam ut augue elementum, ultrices tortor vitae, dignissim libero."
 
 function MainGrid({children}) {
@@ -17,6 +19,7 @@ function MainGrid({children}) {
     </div>
   )
 }
+
 
 function InnerSection(props){
   return (
@@ -34,6 +37,7 @@ function ChartTip(props){
     </div>
   )
 }
+
 
 function ChartCol(props){
   const [on_hover,set_on_hover] = useState("hidden")
@@ -70,10 +74,10 @@ function ScrollIndicatorContainer(props){
   return(
     <div className={`${props.className} pointer-events-none absolute z-[10] flex flex-row w-full h-full justify-between items-center px-16 transition-all`}>
       <ScrollIndicator>
-        0
+        <FontAwesomeIcon icon={faArrowLeft} />
       </ScrollIndicator>
       <ScrollIndicator>
-        1
+        <FontAwesomeIcon icon={faArrowRight} />
       </ScrollIndicator>
     </div>
   )
@@ -91,6 +95,7 @@ ChartCol.defaultProps = {
 }
 
 function Chart(props){
+  props.defaultProps
   const [on_hover,set_on_hover] = useState("hidden")
   
   console.log(props.scrollable)
@@ -148,7 +153,7 @@ Chart.defaultProps = {
 
 function HeadingChip(){
   return (
-    <div className="bg-gradient-to-l from-fuchsia-500 via-blue-500 to-emerald-400 w-[100px] h-[8px]"/>
+    <div className="bg-gradient-to-l from-fuchsia-500 via-blue-500 to-emerald-400 w-[75px] h-[8px]"/>
   )
 }
 
@@ -206,9 +211,9 @@ export default function Home() {
 
         <div className="col-span-full">
           <InnerSection className="items-center text-center">
-            <h2>Thanks for looking! If you use these, just let me know on Twitter or somewhere else.</h2>
+          <h2>Thanks for looking! I'd love to hear if you've used these in any way, so feel free to shoot me a message</h2>
             <p>You should look at everything else I do</p>
-            <BigButton href="https://darionmccoy.com">Learn more about me</BigButton>
+            <BigButton href="https://darionmccoy.com">Explore more projects</BigButton>
           </InnerSection>
         </div>
 
