@@ -1,8 +1,8 @@
 'use client'
 
-import my_image from "/public/jakayla-toney-I8I7Ektzx-c-unsplash.jpg"
-import {useFormStatus} from "react-dom";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
+
 const data_sheet = require('./test_data.json');
 const data_sheet_values = data_sheet.map((entry)=>{
   return entry["Value"] 
@@ -12,14 +12,13 @@ const data_sheet_dates = data_sheet.map((entry)=>{
   return entry["Date"] 
 })
 
-const nums_min = Math.min.apply(null, data_sheet_values)
 const nums_max = Math.max.apply(null, data_sheet_values)
 const lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis nisl quis elit pulvinar pharetra nec ac eros. Aliquam ut augue elementum, ultrices tortor vitae, dignissim libero."
 
 function MainGrid({children}) {
   return(
     <div className="flex flex-row justify-center">
-      <div className="grid grid-cols-12 place-content-center max-w-[1200px] w-full gap-16 md:mx-16 mx-8">
+      <div className="grid md:grid-cols-12 grid-cols-4 place-content-center md:max-w-[1200px] w-full gap-x-16 gap-y-32 py-32 md:mx-16 mx-8">
       {children}
     </div>
   </div>
@@ -34,121 +33,55 @@ function InnerSection(props){
   )
 }
 
-function Spacer(){
-  return (
-    <div className="my-2"/>
-  )
-}
 
-function UiImage(props){
-  return (
-    <div className={`${props.className} w-full aspect-square bg-cover bg-center`} style={{ backgroundImage: `url(${my_image.src})`}}/>
-  )
-}
-
-
-function ContactForm(){
-
-  async function GetData(){
-
-  }
-
-  return (
-    <form className="w-full grid grid-cols-6 gap-4" action={GetData()}>
-      <label className="col-span-3" >
-        <p>First Name</p>
-        <input type="text" id="firstName" name="firstName"/>
-      </label>
-      <label className="col-span-3" >
-        <p>Last Name</p>
-        <input type="text" id="lastName" name="lastName"/>
-      </label>
-      <label className="col-span-full" >
-        <p>Address Line 1</p>
-        <input type="text" id="addressLine1" name="addressLine1"/>
-      </label>
-      <label className="col-span-full" >
-        <p>Address Line 2</p>
-        <input type="text" id="addressLine2" name="addressLine2"/>
-      </label>
-      <div className="col-span-full flex flex-row gap-2">
-        <input type="checkbox" className="accent-primary" id="signUp" name="signUp" value="signUp"/>
-        <label for="signUp">Sign me up for bullshit.</label>
-      </div>
-      <div className="col-span-full items-center">
-        <label>
-          Sign up for our newsletter?
-        </label>
-        <div className="flex flex-row gap-4">
-          <label className="flex flex-row items-center gap-2">
-            <input type="radio" className="accent-primary" id="male" name="male" value="true"/>
-            <p>Yes</p>
-          </label>
-          <label className="flex flex-row items-center gap-2">
-            <input type="radio" className="accent-primary" id="male" name="male" value="false"/>
-            <p>No</p>
-          </label>
-        </div>
-      </div>
-      <Spacer/>
-      {function(){
-              const {pending} = useFormStatus()
-              return (
-              <button type="submit" className="col-span-full" value="Submit" disabled={pending}>
-                {pending ? "Submitting" : "Submit"}
-              </button>
-                )
-            }()}
-    </form>
-  )
-}
-
-function UiImageWide(props){
-  return (
-    <div className={`${props.className} z-[2] relative h-[600px] w-full bg-cover bg-center`} style={{ backgroundImage: `url(${my_image.src})`}}/>
-  )
-}
-
-
-function ToolTip(props){
+function ChartTip(props){
   return (
     <div  className={`tooltip ${props.className}`}>
-        <p className="text-sm text-slate-800 w-full text-center">{props.children}</p>
+        <p className="z-[10] text-sm text-slate-800 w-full text-center"><b>{props.children}</b></p>
     </div>
   )
 }
 
 function ChartCol(props){
   const [on_hover,set_on_hover] = useState("hidden")
-  let height = []
-  const col_scale = 8
+  const [color_bar_height,set_color_bar_height] = useState(0)
+  const bar_parent = useRef(null)
+  const col_scale = props.col_scale
+  const col_width = props.col_width
   const col_style = {
-      'height': col_scale * props.height + "px"
+      'height': col_scale * props.height + "px",
+      'maxHeight': col_scale * props.height + "px"
   }
 
+  useEffect(()=>{
+    set_color_bar_height(bar_parent.current.parentElement.clientHeight)
+  })
+
   return (
-    <div onMouseOver={() => {set_on_hover(true)}} onMouseLeave={() => {set_on_hover(false)}} className="flex flex-col items-center w-full gap-2">
-        <div style={col_style} className={`relative rounded-t-sm hover:bg-fuchsia-700 bg-fuchsia-900 hover:border-t-fuchsia-500 hover:border-x-fuchsia-500 border-x-fuchsia-700 border-t-fuchsia-700 border-b-black flex flex-col items-center w-full border border-solid transition-all duration-300`}>
-          <ToolTip className={on_hover == true ? "opacity-100 top-[-48px]" : "opacity-0 top-[-32px]"}>
-            {props.height}
-          </ToolTip>
+    <div ref={bar_parent} style={col_style} onMouseOver={() => {set_on_hover(true)}} onMouseLeave={() => {set_on_hover(false)}} className="basis-10 shrink-0 grow-0 relative flex flex-col items-center justify-end w-full gap-2">
+
+        <div style={{width: col_width + "px"}} className="flex relative flex-col items-center rounded-t-lg justify-end overflow-hidden h-full">
+          <div style={{height: color_bar_height + "px", width: col_width + "px"}} className={`absolute bg-gradient-to-b ${on_hover == true ? "from-fuchsia-300 via-blue-300 to-emerald-300" : "from-fuchsia-500 via-blue-500 to-emerald-400"} border-b-black flex flex-col items-center border-b border-solid transition-all duration-300`}>
+          </div>
         </div>
-        <p className={`${on_hover == true ? "opacity-100" : "opacity-50"} absolute bottom-[-24px] text-xs text-center w-full`}>{props.date}</p>
+        
+        <ChartTip className={on_hover == true ? "opacity-100 top-[-48px]" : "opacity-0 top-[-32px]"}>
+          {props.height}
+        </ChartTip>
+        <p className={`absolute bottom-[-24px] text-xs text-center w-full`}>{props.date}</p>
     </div>
   )
 }
 
-function Chart(){
+function Chart(props){
 
   let data_v_nums = [
-    <div className="text-xs">{+nums_min.toFixed(1)}</div>,
-    <div className="text-xs">{+(nums_max/4).toFixed(1)}</div>,
-    <div className="text-xs">{+(nums_max/2).toFixed(1)}</div>,
-    <div className="text-xs">{+(nums_max/1.5).toFixed(1)}</div>,
+    <div className="text-xs">{0}</div>,
+    <div className="text-xs">{(nums_max/2).toFixed(1)}</div>,
     <div className="text-xs">{+(nums_max).toFixed(1)}</div>]
 
   const data_cols = data_sheet.map((entry, index)=>{
-    return <ChartCol key={entry} date={entry["Date"]} height={entry["Value"]} index={index}/>
+    return <ChartCol col_scale={props.col_scale} col_width={props.col_width} key={entry} date={entry["Date"]} height={entry["Value"]} index={index}/>
   })
 
   let num_list = []
@@ -157,13 +90,15 @@ function Chart(){
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="relative flex flex-row">
-        <div className="flex flex-col justify-between border-r border-r-neutral-400 pr-2">
-            {data_v_nums.reverse()}
+    <div className="relative flex flex-col">
+      <div className="absolute z-[10] l-0 h-full py-14">
+        <div className="flex flex-col h-full justify-between border-r border-r-neutral-400 pr-2 bg-background">
+          {data_v_nums.reverse()}
         </div>
-        <div className="border-b border-b-neutral-400 pl-2"/>
-        <div className="grow flex flex-row gap-2 justify-start items-end border-b border-b-neutral-400">
+      </div>
+      <div className="relative flex flex-row no-scrollbar overflow-x-scroll items-end overflow-y-hidden ml-8">
+        <div className="border-b border-b-neutral-400 my-14"/>
+        <div className="grow w-full flex flex-row justify-start items-end my-14">
             {data_cols}
         </div>
       </div>
@@ -179,60 +114,52 @@ function BigNum(props){
   )
 }
 
+function HeadingChip(){
+  return (
+    <div className="bg-foreground w-[100px] h-[8px]"/>
+  )
+}
+
+
 export default function Home() {
+
   return (
     <MainGrid>
-        <header className="col-span-full py-4"/>
-        <div className="col-span-6">
+        <div className="md:col-span-6 col-span-full">
           <InnerSection>
-            <div className="bg-foreground w-[100px] h-[8px]"/>
-            <h1>A new beginning.</h1>
+            <HeadingChip/>
+            <h1>A date with data.</h1>
           </InnerSection>
         </div>
-
         <div className="md:col-span-6 col-span-full">
           <InnerSection className="justify-start">
-            <h3>In another life, you may regret this decision.</h3>
             <p>{lorem_ipsum + " " + lorem_ipsum}</p>
           </InnerSection>
         </div>
         
         <div className="col-span-full">
-          <Chart/>
+          <Chart col_scale="8" col_width="4"/>
         </div>
 
         <div className="md:col-span-6 col-span-full">
-          <div className="grid grid-cols-4 gap-4 aspect-square h-auto">
-            <BigNum className="col-span-2">
-              <h1>10</h1>
-              <p>something something.</p>
-            </BigNum>
-            <BigNum className="col-span-2">
-              <h1>7</h1>
-              <p>something something.</p>
-            </BigNum>
-            <BigNum className="col-span-2">
-              <h1>13</h1>
-              <p>something something.</p>
-            </BigNum>
-            <BigNum className="col-span-2">
-              <h1>8</h1>
-              <p>something something.</p>
-            </BigNum>
-          </div>
+          <Chart col_scale="8" col_width="34"/>
+        </div>
+        <div className="md:col-span-6 col-span-full">
+          <Chart col_scale="8" col_width="16"/>
+        </div>
+  
+        <div className="md:col-span-full col-span-full">
+            <Chart col_scale="8" col_width="120"/>
         </div>
 
-        <div className="md:col-span-6 col-span-full">
-          <InnerSection className="justify-center">
-            <h2>Contact Us</h2>
-            <p>We promise it won't take long.</p>
-            <Spacer/>
-            <ContactForm/>
+        <div className="md:col-span-full col-span-full">
+          <InnerSection className="items-center text-center">
+            <h2>Thanks for looking!</h2>
+            <p>You should look at everything else I do</p>
+            <Link className = "bg-primary rounded-md p-4 text-black font-bold" href="https://darionmccoy.com">Learn more about me</Link>
           </InnerSection>
         </div>
 
-
-        <footer className="col-span-full py-4"/>
     </MainGrid>
   );
 }
