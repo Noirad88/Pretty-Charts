@@ -1,5 +1,5 @@
 # Pretty charts
-
+![image](https://github.com/user-attachments/assets/f408596a-a4c7-449f-8329-b6eb7f587121)
 Experimenting with a custom, responsive chart component in React.
 
 ## Getting Started
