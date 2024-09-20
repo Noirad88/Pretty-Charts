@@ -13,15 +13,15 @@ const openSans = localFont({
 });
 
 export const metadata = {
-  title: "Playground",
-  description: "Just a page for tinkering",
+  title: "Pretty Charts",
+  description: "By Darion McCoy",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${sora.variable} ${openSans.variable} antialiased`}
+        className={`${sora.variable} ${openSans.variable} antialiased w-full`}
       >
         {children}
       </body>
