@@ -1,5 +1,7 @@
 # Pretty charts
-![image](https://github.com/user-attachments/assets/f408596a-a4c7-449f-8329-b6eb7f587121)
+
+![pretty_charts-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/82d415a7-8042-4fb0-9abd-0cd74506f6f9)
+
 Experimenting with a custom, responsive chart component in React.
 
 ## Getting Started
